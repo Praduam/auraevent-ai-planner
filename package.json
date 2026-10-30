@@ -1,0 +1,21 @@
+{
+  "name": "auraevent-ai-planner",
+  "version": "1.0.0",
+  "description": "GenAI-powered planning assistant for weddings, birthdays, and community events with budgets, timelines, vendor checklists, and personalized ideas.",
+  "scripts": {
+    "dev": "node local-server.js"
+  },
+  "keywords": [
+    "genai",
+    "event-planner",
+    "wedding-planner",
+    "birthday-organizer",
+    "community-events",
+    "budget-tracker",
+    "timeline",
+    "run-of-show",
+    "vendor-checklist"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

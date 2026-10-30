@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AuraEvent AI: The intelligent GenAI planning assistant for weddings, milestone birthdays, and community festivals with dynamic budgets, run-of-show timelines, vendor checklists, and personalized ideas.">
+  <meta name="keywords" content="wedding planner, birthday organizer, community festival, event budget, run of show timeline, vendor checklist, genai assistant">
+  <title>AuraEvent AI • GenAI Event Planning Assistant</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <div class="brand-section" id="brand-home-btn" role="button" tabindex="0" title="Return to Dashboard">
+        <div class="brand-logo-mark">✦</div>
+        <div class="brand-info">
+          <div class="brand-title">AuraEvent AI</div>
+          <div class="brand-tagline">Intelligent Celebration Architect</div>
+        </div>
+      </div>
+
+      <!-- Event Preset / Switcher -->
+      <div class="event-switcher-wrapper" id="event-switcher-box">
+        <span class="event-selector-label">Active Plan:</span>
+        <select class="event-select-dropdown" id="event-select-dropdown" aria-label="Select active event plan">
+          <!-- Populated by JS -->
+        </select>
+        <button class="btn btn-secondary" id="open-new-event-modal-btn" style="padding: 0.25rem 0.65rem; font-size: 0.78rem;">
+          + New Event
+        </button>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="btn btn-ai-glow" id="open-ai-drawer-btn" title="Open AI Planning Co-pilot">
+          <span>🧠</span> Ask AI Planner
+        </button>
+        <button class="btn btn-secondary" id="open-export-modal-btn" title="Export, Backup or Print Plan">
+          <span>📤</span> Export / Print
+        </button>
+        <button class="btn-icon-only" id="open-settings-modal-btn" title="AI Settings & API Key">
+          ⚙️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-wrapper" id="main-content">
+    
+    <!-- Hero Showcase Banner -->
+    <section class="hero-banner-card" id="hero-banner-card" aria-label="Event Showcase Banner">
+      <div class="hero-media-wrapper">
+        <img src="assets/images/wedding-hero.jpg" alt="Event Atmosphere Banner" class="hero-image" id="hero-banner-img">
+        <div class="hero-gradient-overlay"></div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-text-block">
+          <div class="event-badge-strip">
+            <span class="badge badge-gold" id="hero-badge-type">💍 Wedding</span>
+            <span class="badge badge-glass" id="hero-badge-health">Health Score: 92%</span>
+            <span class="badge badge-emerald" id="hero-badge-status">Active Planning</span>
+          </div>
+          <h1 class="hero-title" id="hero-event-title">Elena &amp; Marcus • Enchanted Conservatory Romance</h1>
+          <div class="hero-meta-row">
+            <span class="hero-meta-item" id="hero-meta-date">📅 November 14, 2026</span>
+            <span class="hero-meta-item" id="hero-meta-location">📍 The Glasshouse Pavilion, Portland</span>
+            <span class="hero-meta-item" id="hero-meta-guests">👥 140 Guests</span>
+            <span class="hero-meta-item" id="hero-meta-budget">💰 ₹25,00,000 Total Budget</span>
+          </div>
+        </div>
+
+        <!-- Countdown Flip Box -->
+        <div class="countdown-box" id="event-countdown-box">
+          <div class="countdown-label">
+            <span>⏳</span> Celebration Countdown
+          </div>
+          <div class="countdown-grid">
+            <div class="countdown-unit">
+              <div class="countdown-digit" id="countdown-days">00</div>
+              <div class="countdown-unit-name">Days</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-digit" id="countdown-hours">00</div>
+              <div class="countdown-unit-name">Hours</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-digit" id="countdown-mins">00</div>
+              <div class="countdown-unit-name">Mins</div>
+            </div>
+            <div class="countdown-unit">
+              <div class="countdown-digit" id="countdown-secs">00</div>
+              <div class="countdown-unit-name">Secs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs Bar -->
+    <nav class="navigation-tabs-wrapper" aria-label="Planning Sections Navigation">
+      <div class="tabs-nav" role="tablist">
+        <button class="tab-btn is-active" id="tab-btn-overview" role="tab" aria-selected="true" data-tab="tab-panel-overview">
+          <span>📊</span> Overview
+        </button>
+        <button class="tab-btn" id="tab-btn-budget" role="tab" aria-selected="false" data-tab="tab-panel-budget">
+          <span>💰</span> Budget Planner <span class="tab-badge" id="budget-tab-badge">₹25.0L</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-timeline" role="tab" aria-selected="false" data-tab="tab-panel-timeline">
+          <span>⏱️</span> Timeline &amp; Run-of-Show <span class="tab-badge" id="timeline-tab-badge">15 Tasks</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-vendors" role="tab" aria-selected="false" data-tab="tab-panel-vendors">
+          <span>🤝</span> Vendor CRM <span class="tab-badge" id="vendor-tab-badge">7 Partners</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-ideas" role="tab" aria-selected="false" data-tab="tab-panel-ideas">
+          <span>✨</span> Personalized Ideas <span class="tab-badge" id="ideas-tab-badge">5 Concepts</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-guests" role="tab" aria-selected="false" data-tab="tab-panel-guests">
+          <span>💌</span> Guest List &amp; RSVPs <span class="tab-badge" id="guests-tab-badge">140</span>
+        </button>
+      </div>
+
+      <div class="tab-quick-actions">
+        <button class="btn btn-secondary" id="quick-ai-suggest-btn" title="AI Tactical Recommendations">
+          <span>✦</span> AI Advice
+        </button>
+      </div>
+    </nav>
+
+    <!-- =======================================================================
+         TAB 1: Overview & KPI Dashboard
+         ======================================================================= -->
+    <section class="tab-panel is-active" id="tab-panel-overview" role="tabpanel">
+      <!-- KPI Metric Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card" id="kpi-budget-card">
+          <div class="kpi-card-header">
+            <div class="kpi-title">Committed Budget</div>
+            <div class="kpi-icon-pill" style="background: var(--gold-dim); color: var(--gold-light);">💰</div>
+          </div>
+          <div class="kpi-value" id="kpi-budget-value">₹23,79,000</div>
+          <div class="kpi-subtext" id="kpi-budget-subtext">of ₹25,00,000 allocated (95.2%)</div>
+          <div class="progress-track">
+            <div class="progress-fill progress-gold" id="kpi-budget-bar" style="width: 90.6%;"></div>
+          </div>
+        </div>
+
+        <div class="kpi-card" id="kpi-timeline-card">
+          <div class="kpi-card-header">
+            <div class="kpi-title">Timeline Progress</div>
+            <div class="kpi-icon-pill" style="background: var(--indigo-dim); color: #a5b4fc;">⏱️</div>
+          </div>
+          <div class="kpi-value" id="kpi-timeline-value">4 / 15</div>
+          <div class="kpi-subtext" id="kpi-timeline-subtext">Milestones &amp; cues completed</div>
+          <div class="progress-track">
+            <div class="progress-fill progress-indigo" id="kpi-timeline-bar" style="width: 27%;"></div>
+          </div>
+        </div>
+
+        <div class="kpi-card" id="kpi-vendor-card">
+          <div class="kpi-card-header">
+            <div class="kpi-title">Vendors Confirmed</div>
+            <div class="kpi-icon-pill" style="background: var(--emerald-dim); color: #6ee7b7;">🤝</div>
+          </div>
+          <div class="kpi-value" id="kpi-vendor-value">7 / 7 Booked</div>
+          <div class="kpi-subtext" id="kpi-vendor-subtext">100% contracts locked in</div>
+          <div class="progress-track">
+            <div class="progress-fill progress-emerald" id="kpi-vendor-bar" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <div class="kpi-card" id="kpi-guest-card">
+          <div class="kpi-card-header">
+            <div class="kpi-title">RSVP Headcount</div>
+            <div class="kpi-icon-pill" style="background: var(--rose-dim); color: #f472b6;">💌</div>
+          </div>
+          <div class="kpi-value" id="kpi-guest-value">118 Attending</div>
+          <div class="kpi-subtext" id="kpi-guest-subtext">12 declined • 10 pending response</div>
+          <div class="progress-track">
+            <div class="progress-fill" style="background: var(--rose-primary); width: 84%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Columns: AI Insights & Quick Action Feed -->
+      <div class="dashboard-columns">
+        <div class="column-primary">
+          <div class="surface-card" id="ai-strategic-brief-card">
+            <div class="card-title-row">
+              <h2 class="section-heading"><span>🧠</span> AI Strategic Event Brief</h2>
+              <button class="btn btn-secondary" id="refresh-ai-brief-btn" style="font-size: 0.78rem; padding: 0.35rem 0.8rem;">
+                Regenerate Analysis
+              </button>
+            </div>
+            <div id="ai-brief-content-box" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Upcoming Timeline Tasks -->
+          <div class="surface-card">
+            <div class="card-title-row">
+              <h2 class="section-heading"><span>📅</span> Critical Next Milestones</h2>
+              <button class="btn btn-secondary" id="view-full-timeline-btn" style="font-size: 0.78rem; padding: 0.35rem 0.8rem;">
+                View Master Timeline →
+              </button>
+            </div>
+            <div class="timeline-list" id="overview-upcoming-timeline-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="column-sidebar">
+          <!-- Color Palette Preview -->
+          <div class="surface-card">
+            <div class="card-title-row">
+              <h3 class="section-heading" style="font-size: 1rem;"><span>🎨</span> Aesthetic Palette</h3>
+            </div>
+            <div class="palette-swatches-strip" id="overview-palette-strip" style="margin-bottom: 0.75rem;">
+              <!-- Populated by JS -->
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">
+              Click any swatch to copy the HEX color code directly to your clipboard.
+            </p>
+          </div>
+
+          <!-- AI Assistant Quick Launch -->
+          <div class="surface-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(243, 186, 47, 0.08)); border-color: rgba(99, 102, 241, 0.3);">
+            <h3 class="section-heading" style="font-size: 1.05rem; margin-bottom: 0.6rem;">
+              <span>✦</span> Instant Planning Co-Pilot
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Ask your AI assistant for budget cuts, speech scripts, or weather contingency plans.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <button class="btn btn-secondary prompt-chip-launcher" data-prompt="How can I save 15% on catering without compromising flavor?" style="text-align: left; justify-content: flex-start; font-size: 0.8rem;">
+                💰 How can I trim 15% on catering?
+              </button>
+              <button class="btn btn-secondary prompt-chip-launcher" data-prompt="Generate a minute-by-minute Day-of Run-of-Show schedule" style="text-align: left; justify-content: flex-start; font-size: 0.8rem;">
+                ⏱️ Generate Day-of Run-of-Show
+              </button>
+              <button class="btn btn-secondary prompt-chip-launcher" data-prompt="What questions should I ask my catering and venue vendors?" style="text-align: left; justify-content: flex-start; font-size: 0.8rem;">
+                📋 Vendor vetting checklist
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 2: Dynamic Budget Planner
+         ======================================================================= -->
+    <section class="tab-panel" id="tab-panel-budget" role="tabpanel">
+      <!-- Visual Strip: Canvas Donut + Stats -->
+      <div class="budget-visual-strip">
+        <div class="chart-container-box">
+          <canvas id="budgetDonutCanvas" width="240" height="240" class="canvas-chart"></canvas>
+        </div>
+        <div class="budget-stats-cards">
+          <div class="budget-stat-item">
+            <div class="budget-stat-label">Total Allocated</div>
+            <div class="budget-stat-num" id="budget-stat-allocated">₹25,60,000</div>
+          </div>
+          <div class="budget-stat-item">
+            <div class="budget-stat-label">Actual Committed</div>
+            <div class="budget-stat-num" id="budget-stat-actual" style="color: #60a5fa;">₹23,79,000</div>
+          </div>
+          <div class="budget-stat-item">
+            <div class="budget-stat-label">Paid to Date</div>
+            <div class="budget-stat-num" id="budget-stat-paid" style="color: var(--emerald-primary);">₹11,62,000</div>
+          </div>
+          <div class="budget-stat-item">
+            <div class="budget-stat-label">Remaining Buffer</div>
+            <div class="budget-stat-num" id="budget-stat-remaining" style="color: var(--gold-light);">₹1,21,000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expense Table & Actions -->
+      <div class="surface-card">
+        <div class="card-title-row">
+          <div>
+            <h2 class="section-heading"><span>📋</span> Detailed Expense Breakdown</h2>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+              Track estimated allocations versus invoiced and paid totals.
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.6rem;">
+            <button class="btn btn-secondary" id="ai-optimize-budget-btn">
+              <span>🧠</span> AI Optimize Budget
+            </button>
+            <button class="btn btn-primary" id="open-add-expense-modal-btn">
+              + Add Expense
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="budget-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Expense Item</th>
+                <th>Allocated</th>
+                <th>Actual / Invoiced</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Notes</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="budget-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 3: Timeline & Run-of-Show
+         ======================================================================= -->
+    <section class="tab-panel" id="tab-panel-timeline" role="tabpanel">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div class="timeline-mode-toggle" role="group" aria-label="Timeline Phase Selection">
+          <button class="timeline-toggle-btn is-active" id="filter-timeline-all" data-phase="all">All Items</button>
+          <button class="timeline-toggle-btn" id="filter-timeline-milestones" data-phase="Milestones">Milestones Roadmap</button>
+          <button class="timeline-toggle-btn" id="filter-timeline-runofshow" data-phase="Run-of-Show">Day-of Run of Show</button>
+        </div>
+
+        <div style="display: flex; gap: 0.6rem;">
+          <button class="btn btn-secondary" id="ai-generate-runofshow-btn">
+            <span>🧠</span> AI Auto-Generate Run-of-Show
+          </button>
+          <button class="btn btn-primary" id="open-add-timeline-modal-btn">
+            + Add Milestone / Cue
+          </button>
+        </div>
+      </div>
+
+      <div class="surface-card">
+        <div class="timeline-list" id="timeline-full-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 4: Vendor CRM & Checklist
+         ======================================================================= -->
+    <section class="tab-panel" id="tab-panel-vendors" role="tabpanel">
+      <div class="vendor-toolbar">
+        <div class="search-input-wrapper">
+          <span class="search-icon-inside">🔍</span>
+          <input type="text" class="search-input" id="vendor-search-input" placeholder="Search vendors or categories...">
+        </div>
+
+        <div style="display: flex; gap: 0.6rem;">
+          <select class="form-select" id="vendor-status-filter" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem;">
+            <option value="all">All Statuses</option>
+            <option value="Booked">Booked</option>
+            <option value="In Talks">In Talks</option>
+            <option value="Researching">Researching</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <button class="btn btn-primary" id="open-add-vendor-modal-btn">
+            + Add Vendor
+          </button>
+        </div>
+      </div>
+
+      <div class="vendor-grid" id="vendor-cards-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 5: Personalized Ideas & Inspiration Studio
+         ======================================================================= -->
+    <section class="tab-panel" id="tab-panel-ideas" role="tabpanel">
+      <!-- Color Palette Showcase Card -->
+      <div class="palette-swatches-card" id="palette-full-card">
+        <div>
+          <h2 class="section-heading" style="font-size: 1.1rem; margin-bottom: 0.3rem;">
+            <span>🎨</span> Curated Color Palette &amp; Hex Swatches
+          </h2>
+          <div style="font-size: 0.82rem; color: var(--text-muted);">
+            Harmonized palette tailored to this event's aesthetic. Tap any swatch to copy code.
+          </div>
+        </div>
+        <div class="palette-swatches-strip" id="ideas-palette-strip">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Quick AI Idea Generator Bar -->
+      <div class="surface-card" style="margin-bottom: 1.75rem; background: linear-gradient(135deg, rgba(243, 186, 47, 0.08), rgba(99, 102, 241, 0.08));">
+        <div class="card-title-row">
+          <div>
+            <h2 class="section-heading" style="font-size: 1.1rem;"><span>💡</span> Spark New Personalized Ideas</h2>
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;">
+              Prompt the GenAI engine to brainstorm signature cocktails, photo-ops, or sensory moments.
+            </div>
+          </div>
+          <button class="btn btn-primary" id="open-add-custom-idea-modal-btn">
+            + Add Custom Idea
+          </button>
+        </div>
+        <div style="display: flex; gap: 0.75rem; margin-top: 0.75rem;">
+          <input type="text" class="form-input" id="quick-idea-prompt-input" placeholder="e.g. Unique cocktail ideas for an outdoor autumn wedding, or 90s retro games...">
+          <button class="btn btn-ai-glow" id="trigger-ai-idea-btn">
+            <span>✨</span> Generate with AI
+          </button>
+        </div>
+      </div>
+
+      <!-- Ideas Grid -->
+      <div class="ideas-grid" id="ideas-cards-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 6: Guest List & RSVPs
+         ======================================================================= -->
+    <section class="tab-panel" id="tab-panel-guests" role="tabpanel">
+      <div class="surface-card">
+        <div class="card-title-row">
+          <div>
+            <h2 class="section-heading"><span>💌</span> Guest List &amp; Dietary Tracker</h2>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+              Manage invitations, RSVPs, dietary restrictions, and table seating assignments.
+            </div>
+          </div>
+          <button class="btn btn-primary" id="open-add-guest-modal-btn">
+            + Add Guest
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="guests-table">
+            <thead>
+              <tr>
+                <th>Guest / Party Name</th>
+                <th>RSVP Status</th>
+                <th>Party Size</th>
+                <th>Meal Selection</th>
+                <th>Table / Zone</th>
+                <th>Dietary Restrictions</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="guests-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       AI Planning Drawer (Interactive Assistant)
+       ========================================================================= -->
+  <div class="ai-drawer-backdrop" id="ai-drawer-backdrop">
+    <aside class="ai-drawer-panel" id="ai-drawer-panel" aria-label="AI Event Planner Chat Drawer">
+      <div class="ai-drawer-header">
+        <div class="ai-header-title">
+          <div class="ai-pulse-orb"></div>
+          <span>Aura AI Planning Co-Pilot</span>
+        </div>
+        <button class="btn-icon-only" id="close-ai-drawer-btn" aria-label="Close AI Drawer">✕</button>
+      </div>
+
+      <div class="ai-chat-body" id="ai-chat-messages-container">
+        <!-- Initial Welcome Message -->
+        <div class="chat-message chat-ai">
+          <div class="chat-bubble">
+            <strong>Hello! I am AuraEvent AI</strong>, your high-performance event architect.
+            <br><br>
+            I can help you dynamically rebalance your budget, draft speech scripts, formulate vendor vetting questions, or build a minute-by-minute run-of-show.
+            <br><br>
+            <em>Select a prompt below or type your own question:</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Prompt Chips -->
+      <div class="ai-prompt-chips-wrapper">
+        <button class="prompt-chip" data-prompt="Where can I cut 15% from my budget without impacting guests?">💰 Cut 15% Budget</button>
+        <button class="prompt-chip" data-prompt="What questions should I ask my catering and venue vendors?">📋 Vendor Questions</button>
+        <button class="prompt-chip" data-prompt="Generate 3 unique signature cocktail and mocktail concepts">🍹 Signature Cocktails</button>
+        <button class="prompt-chip" data-prompt="Create a minute-by-minute Day-of Run-of-Show schedule">⏱️ Run-of-Show</button>
+        <button class="prompt-chip" data-prompt="What is a good weather contingency plan for outdoor events?">🌧️ Rain Contingency</button>
+      </div>
+
+      <div class="ai-chat-input-bar">
+        <input type="text" class="ai-input-field" id="ai-chat-input" placeholder="Ask AI planning questions...">
+        <button class="btn btn-primary" id="ai-chat-send-btn" style="border-radius: var(--radius-pill); padding: 0.5rem 1rem;">
+          Send
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- Modal: Create New Event with GenAI -->
+  <div class="modal" id="modal-create-event">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">✨ Create New Event Plan with AI</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="create-event-form">
+          <div class="form-group">
+            <label class="form-label" for="new-event-title">Event Title / Couple / Host</label>
+            <input type="text" class="form-input" id="new-event-title" required placeholder="e.g. Maya &amp; Chris • Coastal Vineyard Wedding">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="new-event-type">Celebration Type</label>
+              <select class="form-select" id="new-event-type" required>
+                <option value="wedding">💍 Wedding</option>
+                <option value="birthday">🎂 Milestone Birthday</option>
+                <option value="community">🎪 Community Festival / Gala</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="new-event-date">Target Date</label>
+              <input type="date" class="form-input" id="new-event-date" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="new-event-budget">Total Target Budget (₹)</label>
+              <input type="number" class="form-input" id="new-event-budget" required value="1500000">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="new-event-guests">Estimated Guests</label>
+              <input type="number" class="form-input" id="new-event-guests" required value="100">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="new-event-location">Venue / City / Setting</label>
+            <input type="text" class="form-input" id="new-event-location" placeholder="e.g. Napa Valley Vineyard, CA">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="new-event-vibe">Desired Vibe &amp; Aesthetic Style</label>
+            <input type="text" class="form-input" id="new-event-vibe" placeholder="e.g. Bohemian luxury, warm terracotta, live strings &amp; bistro lights">
+          </div>
+          <div id="create-event-loading-msg" style="display: none; padding: 0.85rem; background: var(--bg-surface); border-radius: var(--radius-sm); font-size: 0.84rem; color: var(--gold-light);">
+            🧠 <em>GenAI is generating tailored budget, master timeline, and vendor checklists...</em>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button class="btn btn-primary" id="submit-create-event-btn">Generate Plan with AI ✦</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add / Edit Expense -->
+  <div class="modal" id="modal-expense">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="expense-modal-title">+ Add Expense Item</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="expense-form">
+          <input type="hidden" id="expense-edit-id" value="">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="expense-category">Category</label>
+              <select class="form-select" id="expense-category" required>
+                <option value="Venue & Rentals">Venue &amp; Rentals</option>
+                <option value="Food & Beverage">Food &amp; Beverage</option>
+                <option value="Photo & Video">Photo &amp; Video</option>
+                <option value="Florals & Decor">Florals &amp; Decor</option>
+                <option value="Music & Entertainment">Music &amp; Entertainment</option>
+                <option value="Attire & Beauty">Attire &amp; Beauty</option>
+                <option value="Cake & Desserts">Cake &amp; Desserts</option>
+                <option value="Stationery & Signage">Stationery &amp; Signage</option>
+                <option value="Permits & Municipal">Permits &amp; Municipal</option>
+                <option value="Contingency Fund">Contingency Fund</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="expense-status">Status</label>
+              <select class="form-select" id="expense-status">
+                <option value="Estimated">Estimated</option>
+                <option value="Invoiced">Invoiced</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="expense-item-name">Item Description</label>
+            <input type="text" class="form-input" id="expense-item-name" required placeholder="e.g. Cocktail Hour Passed Appetizers">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="expense-allocated">Allocated (₹)</label>
+              <input type="number" class="form-input" id="expense-allocated" required value="50000">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="expense-actual">Actual / Invoiced (₹)</label>
+              <input type="number" class="form-input" id="expense-actual" value="0">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="expense-duedate">Payment Due Date</label>
+              <input type="date" class="form-input" id="expense-duedate">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="expense-notes">Notes / Vendor</label>
+              <input type="text" class="form-input" id="expense-notes" placeholder="e.g. 50% deposit paid">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button class="btn btn-primary" id="submit-expense-btn">Save Expense</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add / Edit Timeline Milestone -->
+  <div class="modal" id="modal-timeline">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="timeline-modal-title">+ Add Timeline Task</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="timeline-form">
+          <input type="hidden" id="timeline-edit-id" value="">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="timeline-phase">Timeline Phase</label>
+              <select class="form-select" id="timeline-phase" required>
+                <option value="Run-of-Show">Day-of Run of Show</option>
+                <option value="Milestones">Milestones Roadmap</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="timeline-time">Time / Milestone Window</label>
+              <input type="text" class="form-input" id="timeline-time" required placeholder="e.g. 04:30 PM or 3 Months Out">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="timeline-task">Task / Milestone Description</label>
+            <input type="text" class="form-input" id="timeline-task" required placeholder="e.g. First dance &amp; cake cutting">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="timeline-lead">Point Person / Lead</label>
+              <input type="text" class="form-input" id="timeline-lead" placeholder="e.g. DJ / MC, Planner, Elena">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="timeline-category">Category</label>
+              <input type="text" class="form-input" id="timeline-category" placeholder="e.g. Reception, Ceremony, Setup">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button class="btn btn-primary" id="submit-timeline-btn">Save Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add / Edit Vendor -->
+  <div class="modal" id="modal-vendor">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="vendor-modal-title">+ Add Vendor Partner</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="vendor-form">
+          <input type="hidden" id="vendor-edit-id" value="">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="vendor-category">Vendor Category</label>
+              <input type="text" class="form-input" id="vendor-category" required placeholder="e.g. Catering, Photography, Venue">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="vendor-status">Booking Status</label>
+              <select class="form-select" id="vendor-status">
+                <option value="Researching">Researching</option>
+                <option value="In Talks">In Talks</option>
+                <option value="Booked">Booked &amp; Contracted</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vendor-name">Company / Business Name</label>
+            <input type="text" class="form-input" id="vendor-name" required placeholder="e.g. Lumina Wedding Photography">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="vendor-contact">Contact Person</label>
+              <input type="text" class="form-input" id="vendor-contact" placeholder="e.g. Sarah Jenkins">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="vendor-phone">Phone Number</label>
+              <input type="text" class="form-input" id="vendor-phone" placeholder="e.g. (503) 555-0192">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vendor-email">Email Address</label>
+            <input type="email" class="form-input" id="vendor-email" placeholder="e.g. events@luminaphoto.com">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="vendor-quoted">Quoted / Contracted (₹)</label>
+              <input type="number" class="form-input" id="vendor-quoted" value="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="vendor-deposit">Deposit Paid (₹)</label>
+              <input type="number" class="form-input" id="vendor-deposit" value="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vendor-notes">Internal Notes &amp; Terms</label>
+            <input type="text" class="form-input" id="vendor-notes" placeholder="e.g. 10 hours coverage, 2 shooters included">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button class="btn btn-primary" id="submit-vendor-btn">Save Vendor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Personalized Idea -->
+  <div class="modal" id="modal-idea">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">+ Add Personalized Idea</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="idea-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="idea-category">Category</label>
+              <select class="form-select" id="idea-category">
+                <option value="Signature Bar">Signature Bar &amp; Drinks</option>
+                <option value="Guest Experience">Guest Experience &amp; Games</option>
+                <option value="Decor & Ambience">Decor &amp; Ambience</option>
+                <option value="Late Night Fuel">Late Night Treats</option>
+                <option value="Ceremony Highlight">Ceremony Highlight</option>
+                <option value="Keepsake">Memories &amp; Keepsakes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="idea-tags">Tags (comma separated)</label>
+              <input type="text" class="form-input" id="idea-tags" placeholder="e.g. Cocktails, Aesthetic, Fun">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="idea-title">Idea Concept Title</label>
+            <input type="text" class="form-input" id="idea-title" required placeholder="e.g. Lavender Gin &amp; Elderflower Tower">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="idea-desc">Full Description &amp; Setup Details</label>
+            <textarea class="form-textarea" id="idea-desc" rows="4" required placeholder="Describe how this idea works, how it delights guests, and supplies needed..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button class="btn btn-primary" id="submit-idea-btn">Add to Vision Board</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Guest -->
+  <div class="modal" id="modal-guest">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">+ Add Guest / Party</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="guest-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="guest-name">Guest / Party Name</label>
+              <input type="text" class="form-input" id="guest-name" required placeholder="e.g. Marcus &amp; Chloe King">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest-rsvp">RSVP Status</label>
+              <select class="form-select" id="guest-rsvp">
+                <option value="Attending">Attending</option>
+                <option value="Pending">Pending</option>
+                <option value="Declined">Declined</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="guest-count">Party Size</label>
+              <input type="number" class="form-input" id="guest-count" value="1" min="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest-table">Table / Zone</label>
+              <input type="text" class="form-input" id="guest-table" placeholder="e.g. Table 4 or Lounge B">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="guest-meal">Meal Choice</label>
+              <input type="text" class="form-input" id="guest-meal" placeholder="e.g. Halibut, Ribeye, Vegan">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest-diet">Dietary Restrictions</label>
+              <input type="text" class="form-input" id="guest-diet" placeholder="e.g. Gluten-Free, Nut Allergy, Vegan">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button class="btn btn-primary" id="submit-guest-btn">Save Guest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: AI Settings / Gemini Key -->
+  <div class="modal" id="modal-settings">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">⚙️ AI Intelligence Configuration</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.6;">
+          AuraEvent AI includes a built-in expert domain simulation engine ready to use immediately. You can optionally connect your own <strong>Google Gemini API Key</strong> to unlock live generative models:
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gemini-api-key-input">Google Gemini API Key (Optional)</label>
+          <input type="password" class="form-input" id="gemini-api-key-input" placeholder="AIzaSy...">
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Your key stays securely in your local browser storage and is never sent to any third-party server.
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+          <label class="form-label">Data Reset</label>
+          <button class="btn btn-secondary" id="reset-defaults-btn" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+            Reset All Events to Factory Defaults
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Close</button>
+        <button class="btn btn-primary" id="save-settings-btn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Export, Print & Backup -->
+  <div class="modal" id="modal-export">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">📤 Export, Print &amp; Backup Plan</h2>
+        <button class="btn-icon-only" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff; margin-bottom: 0.3rem;">🖨️ Printable Summary &amp; Run-of-Show</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.85rem;">
+              Opens a clean, high-contrast printable document layout with all tasks, schedules, and contacts formatted for paper or PDF save.
+            </p>
+            <button class="btn btn-primary" id="trigger-browser-print-btn">
+              Open Print / PDF Preview
+            </button>
+          </div>
+
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: #ffffff; margin-bottom: 0.3rem;">💾 JSON Backup &amp; Transfer</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.85rem;">
+              Download a complete JSON backup file containing all your weddings, birthdays, and community events.
+            </p>
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+              <button class="btn btn-secondary" id="download-json-backup-btn">
+                Download JSON Backup
+              </button>
+              <label class="btn btn-secondary" style="cursor: pointer; margin: 0;">
+                <span>Import JSON</span>
+                <input type="file" id="import-json-file-input" accept=".json" style="display: none;">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data-store.js"></script>
+  <script src="js/ai-engine.js"></script>
+  <script src="js/ui-components.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
